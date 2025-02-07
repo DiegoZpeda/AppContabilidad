@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <title>Elite Salary SV </title>
+    <style>
+        body {
+            font-family: 'Playfair Display', serif;
+            background-color: #f4f4f9; /* Fondo gris suave */
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: #f7f1f0; /* Fondo beige suave que combina con el rojo */
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1000px;
+            margin: auto;
+        }
+        h1 {
+            color: #B71C1C; /* Rojo elegante */
+            font-size: 30px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        table {
+            width: 100%;
+            margin-top: 25px;
+            border-collapse: collapse;
+            background: #fff; /* Fondo blanco en las tablas */
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 16px;
+            text-align: center;
+            font-size: 16px;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #B71C1C; /* Rojo elegante */
+            color: white;
+            font-weight: 600;
+        }
+        td {
+            background-color: #f9f9f9;
+            color: #555;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            margin: 10px 0;
+        }
+        .button {
+            padding: 14px 28px;
+            background-color: #B71C1C;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 18px;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .button:hover {
+            background-color: white;
+            color: #B71C1C;
+            border: 2px solid #B71C1C;
+        }
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        .table-title {
+            color: #B71C1C;
+            font-weight: 600;
+            font-size: 22px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Elite Salary SV</h1>
+        <div class="table-container">
+            <p class="table-title">Por favor, registra tus datos en los siguientes campos</p>
+            <table id="salaryTable">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Cargo</th>
+                        <th>Salario Base</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" id="nombre" placeholder="Ej. Juan"></td>
+                        <td><input type="text" id="apellido" placeholder="Ej. Pérez"></td>
+                        <td><input type="text" id="cargo" placeholder="Ej. Gerente"></td>
+                        <td><input type="number" id="sueldoBase" placeholder="Ej. 1000"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="button" onclick="calcularSueldo()">Calcular</button>
+
+            <div class="table-container">
+                <p class="table-title">Resultado de los cálculos</p>
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>Descuento de ISSS</th>
+                            <th>AFP</th>
+                            <th>Renta Imponible</th>
+                            <th>Impuesto Sobre la Renta</th>
+                            <th>Salario Neto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span id="resultado-isss">-</span></td>
+                            <td><span id="resultado-afp">-</span></td>
+                            <td><span id="resultado-rentaI">-</span></td>
+                            <td><span id="resultado-isr">-</span></td>
+                            <td><span id="resultado-sueldo-neto">-</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="table-container">
+                <p class="table-title">Aportaciones Patronales</p>
+                <table id="patronalTable">
+                    <thead>
+                        <tr>
+                            <th>ISSS Patronal</th>
+                            <th>AFP Patronal</th>
+                            <th>Total ISSS</th>
+                            <th>Total AFP</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span id="resultado-isssPatronal">-</span></td>
+                            <td><span id="resultado-afpPatronal">-</span></td>
+                            <td><span id="resultado-total-isss">-</span></td>
+                            <td><span id="resultado-total-afp">-</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function calcularSueldo() {
+            let sueldoBase = parseFloat(document.getElementById("sueldoBase").value) || 0;
+            let isss = Math.min(sueldoBase * 0.03, 30);
+            let afp = sueldoBase * 0.0725;
+            let rentaImponible = sueldoBase - isss - afp;
+            let isr = 0;
+            
+            if (rentaImponible > 472.00) {
+                if (rentaImponible <= 895.24) {
+                    isr = (rentaImponible - 472.00) * 0.10 + 17.67;
+                } else if (rentaImponible <= 2038.10) {
+                    isr = (rentaImponible - 895.24) * 0.20 + 60;
+                } else {
+                    isr = (rentaImponible - 2038.10) * 0.30 + 288.57;
+                }
+            }
+
+            let sueldoNeto = rentaImponible - isr;
+            let isssPatronal = sueldoBase * 0.075;
+            let afpPatronal = sueldoBase * 0.0775;
+            let totalIsss = isss + isssPatronal;
+            let totalAfp = afp + afpPatronal;
+
+            document.getElementById("resultado-isss").textContent = "$" + isss.toFixed(2);
+            document.getElementById("resultado-afp").textContent = "$" + afp.toFixed(2);
+            document.getElementById("resultado-rentaI").textContent = "$" + rentaImponible.toFixed(2);
+            document.getElementById("resultado-isr").textContent = "$" + isr.toFixed(2);
+            document.getElementById("resultado-sueldo-neto").textContent = "$" + sueldoNeto.toFixed(2);
+            document.getElementById("resultado-isssPatronal").textContent = "$" + isssPatronal.toFixed(2);
+            document.getElementById("resultado-afpPatronal").textContent = "$" + afpPatronal.toFixed(2);
+            document.getElementById("resultado-total-isss").textContent = "$" + totalIsss.toFixed(2);
+            document.getElementById("resultado-total-afp").textContent = "$" + totalAfp.toFixed(2);
+        }
+    </script>
+</body>
+</html>
