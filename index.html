@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <title>Salatio SV</title>
+    <title>Salario SV</title>
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -79,9 +79,12 @@
         <div class="result-container">
             <p>Descuento ISSS: <span id="resultado-isss">-</span></p>
             <p>AFP: <span id="resultado-afp">-</span></p>
-            <p>Renta Imponible: <span id="resultado-rentaI">-</span></p>
+            <p>Base de ISR: <span id="resultado-rentaI">-</span></p>
             <p>ISR: <span id="resultado-isr">-</span></p>
+            <p>Total Descuentos: <span id="resultado-total-descuentos">-</span></p>
             <p>Salario Neto: <span id="resultado-sueldo-neto">-</span></p>
+            <p>
+            <p>
             <p>ISSS Patronal: <span id="resultado-isssPatronal">-</span></p>
             <p>AFP Patronal: <span id="resultado-afpPatronal">-</span></p>
         </div>
@@ -107,11 +110,13 @@
             let sueldoNeto = rentaImponible - isr;
             let isssPatronal = sueldoBase > 1000 ? 75 : sueldoBase * 0.075;
             let afpPatronal = sueldoBase * 0.0775;
+            let totalDescuentos = afp + isr;
 
             document.getElementById("resultado-isss").textContent = "$" + isss.toFixed(2);
             document.getElementById("resultado-afp").textContent = "$" + afp.toFixed(2);
             document.getElementById("resultado-rentaI").textContent = "$" + rentaImponible.toFixed(2);
             document.getElementById("resultado-isr").textContent = "$" + isr.toFixed(2);
+            document.getElementById("resultado-total-descuentos").textContent = "$" + totalDescuentos.toFixed(2);
             document.getElementById("resultado-sueldo-neto").textContent = "$" + sueldoNeto.toFixed(2);
             document.getElementById("resultado-isssPatronal").textContent = "$" + isssPatronal.toFixed(2);
             document.getElementById("resultado-afpPatronal").textContent = "$" + afpPatronal.toFixed(2);
