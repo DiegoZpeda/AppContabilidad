@@ -109,7 +109,7 @@
 
             let sueldoNeto = rentaImponible - isr;
             let isssPatronal = sueldoBase > 1000 ? 75 : sueldoBase * 0.075;
-            let afpPatronal = sueldoBase * 0.0775;
+            let afpPatronal = sueldoBase * 0.0875;
             let totalDescuentos = afp + isr;
 
             document.getElementById("resultado-isss").textContent = "$" + isss.toFixed(2);
